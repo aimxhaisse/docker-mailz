@@ -7,10 +7,11 @@ CRT_PUB  	?= data/confs/mail.crt
 TPL_SMTPD	?= misc/smtpd.conf.template
 CONF_SMTPD	?= data/confs/smtpd.conf
 CONF_MAILNAME	?= data/confs/mailname
+CREDENTIALS	?= data/users.db
 
 all:	.first-init
 
-.first-init: $(KEY_PRIV) $(CRT_PUB) $(CONF_SMTPD) $(CONF_MAILNAME)
+.first-init: $(KEY_PRIV) $(CRT_PUB) $(CONF_SMTPD) $(CONF_MAILNAME) $(CREDENTIALS)
 	touch $@
 
 $(KEY_PRIV):
@@ -26,3 +27,6 @@ $(CONF_SMTPD): $(TPL_SMTPD)
 
 $(CONF_MAILNAME):
 	echo $(HOSTNAME) > $@
+
+$(CREDENTIALS):
+	touch $@
