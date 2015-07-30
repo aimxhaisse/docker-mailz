@@ -9,10 +9,11 @@ smtpd:
   - data/maildirs:/home
   - data/users.db:/etc/users.db
   ports:
-  - 25:25
-  - 587:587
+  - "25:25"
+  - "587:587"
   links:
   - dovecot
+  - spamd
 
 dovecot:
   build: docker/dovecot
@@ -21,4 +22,12 @@ dovecot:
   - data/confs/mail.key:/etc/ssl/private/mail.key
   - data/users.db:/etc/users.db
   ports:
-  - 993:993
+  - "993:993"
+
+spamd:
+  build: docker/spamd
+
+rainloop:
+  build: docker/rainloop
+  environment:
+  - VIRTUAL_HOST=rain.sbrk.org

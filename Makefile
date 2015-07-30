@@ -8,10 +8,13 @@ TPL_SMTPD	?= misc/smtpd.conf.template
 CONF_SMTPD	?= data/confs/smtpd.conf
 CONF_MAILNAME	?= data/confs/mailname
 CREDENTIALS	?= data/users.db
+RAINLOOP	?= data/rainloop
 
 all:	.first-init
 
-.first-init: $(KEY_PRIV) $(CRT_PUB) $(CONF_SMTPD) $(CONF_MAILNAME) $(CREDENTIALS)
+.first-init: $(KEY_PRIV) $(CRT_PUB) $(CONF_SMTPD) $(CONF_MAILNAME) $(CREDENTIALS) $(RAINLOOP)
+	docker-compose build
+	docker-compose up -d
 	touch $@
 
 $(KEY_PRIV):
@@ -30,3 +33,7 @@ $(CONF_MAILNAME):
 
 $(CREDENTIALS):
 	touch $@
+
+$(RAINLOOP):
+	mkdir -p $@
+	chmod 775 $@
