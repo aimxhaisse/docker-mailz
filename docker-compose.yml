@@ -1,0 +1,24 @@
+smtpd:
+  build: docker/opensmtpd
+  volumes:
+  - data/confs/mail.crt:/etc/ssl/certs/mail.crt
+  - data/confs/mail.key:/etc/ssl/private/mail.key
+  - data/confs/aliases:/etc/aliases
+  - data/confs/smtpd.conf:/etc/smtpd.conf
+  - data/confs/mailname:/etc/mailname
+  - data/maildirs:/home
+  - data/users.db:/etc/users.db
+  ports:
+  - 25:25
+  - 587:587
+  links:
+  - dovecot
+
+dovecot:
+  build: docker/dovecot
+  volumes:
+  - data/confs/mail.crt:/etc/ssl/certs/mail.crt
+  - data/confs/mail.key:/etc/ssl/private/mail.key
+  - data/users.db:/etc/users.db
+  ports:
+  - 993:993

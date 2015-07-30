@@ -1,0 +1,11 @@
+pki mail.{hostname} key "/etc/ssl/private/mail.key"
+pki mail.{hostname} certificate "/etc/ssl/certs/mail.crt"
+
+table aliases file:/etc/aliases
+table credentials passwd:/etc/users.db
+
+listen on 0.0.0.0 port 25 hostname {hostname} tls pki mail.{hostname}
+listen on 0.0.0.0 port 587 hostname {hostname} tls-require pki mail.{hostname} auth <credentials>
+
+accept from any for domain "{hostname}" alias <aliases> deliver to maildir "~/mails"
+accept from local for any relay
