@@ -4,15 +4,14 @@ Mails. Lots of mails.
 
 ## Setup
 
-    make HOSTNAME=your_hostname
-    docker-compose up -d
+    make
 
 You now have:
 
 - a SMTP server configured for your hostname forwarding mails to...
-- an Spam filter which forwards valid emails to...
+- an SPAM filter which forwards regular mails to...
 - an IMAP server which is regularily polled by...
-- a Rainloop web interface waiting for you
+- a RoundCube web interface waiting for you
 
 ## Common Tasks
 

@@ -1,0 +1,33 @@
+<VirtualHost *>
+     ServerAdmin root@{hostname}
+     ServerName mail.${hostname}
+     DocumentRoot /var/lib/roundcube
+     Alias /program/js/tiny_mce/ /usr/share/tinymce/www/
+     <Directory /var/lib/roundcube/>
+     		Options +FollowSymLinks
+		AllowOverride All
+		Require all granted
+     </Directory>
+     <Directory /var/lib/roundcube/config>
+     		Options -FollowSymLinks
+		AllowOverride None
+     </Directory>
+     <Directory /var/lib/roundcube/temp>
+     		Options -FollowSymLinks
+		AllowOverride None
+		Order allow,deny
+		Deny from all
+     </Directory>
+     <Directory /var/lib/roundcube/logs>
+     		Options -FollowSymLinks
+		AllowOverride None
+		Order allow,deny
+		Deny from all
+     </Directory>
+     <Directory /usr/share/tinymce/www/>
+     		Options Indexes MultiViews FollowSymLinks
+		AllowOverride None
+		Order allow,deny
+		Allow from all
+     </Directory>
+</VirtualHost>

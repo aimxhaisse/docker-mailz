@@ -1,5 +1,5 @@
 # Makefile used to initialize dockerz-mail
-HOSTNAME 	?= sbrk.org
+HOSTNAME 	?= $(shell hostname -f)
 
 # Aliases
 KEY_PRIV 	?= data/confs/mail.key
@@ -7,14 +7,14 @@ CRT_PUB  	?= data/confs/mail.crt
 TPL_SMTPD	?= misc/smtpd.conf.template
 CONF_SMTPD	?= data/confs/smtpd.conf
 CONF_MAILNAME	?= data/confs/mailname
+TPL_VHOST	?= misc/virtualhost.template
+CONF_VHOST	?= data/confs/virtualhost.conf
 CREDENTIALS	?= data/users.db
-RAINLOOP	?= data/rainloop
+ROUNDCUBE	?= data/roundcube
 
 all:	.first-init
 
-.first-init: $(KEY_PRIV) $(CRT_PUB) $(CONF_SMTPD) $(CONF_MAILNAME) $(CREDENTIALS) $(RAINLOOP)
-	docker-compose build
-	docker-compose up -d
+.first-init: $(KEY_PRIV) $(CRT_PUB) $(CONF_SMTPD) $(CONF_MAILNAME) $(CREDENTIALS) $(ROUNDCUBE) $(CONF_VHOST)
 	touch $@
 
 $(KEY_PRIV):
@@ -34,6 +34,9 @@ $(CONF_MAILNAME):
 $(CREDENTIALS):
 	touch $@
 
-$(RAINLOOP):
+$(ROUNDCUBE):
 	mkdir -p $@
 	chmod 775 $@
+
+$(CONF_VHOST): $(TPL_VHOST)
+	sed s/{hostname}/$(HOSTNAME)/g $(TPL_VHOST) > $@
