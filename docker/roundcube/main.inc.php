@@ -22,7 +22,7 @@ $rcmail_config = array();
 // ----------------------------------
 
 // system error reporting, sum of: 1 = log; 4 = show, 8 = trace
-$rcmail_config['debug_level'] = 1;
+$rcmail_config['debug_level'] = 4;
 
 // log driver:  'syslog' or 'file'.
 $rcmail_config['log_driver'] = 'file';
@@ -42,22 +42,22 @@ $rcmail_config['syslog_facility'] = LOG_USER;
 $rcmail_config['smtp_log'] = true;
 
 // Log successful logins to <log_dir>/userlogins or to syslog
-$rcmail_config['log_logins'] = false;
+$rcmail_config['log_logins'] = true;
 
 // Log session authentication errors to <log_dir>/session or to syslog
-$rcmail_config['log_session'] = false;
+$rcmail_config['log_session'] = true;
 
 // Log SQL queries to <log_dir>/sql or to syslog
 $rcmail_config['sql_debug'] = false;
 
 // Log IMAP conversation to <log_dir>/imap or to syslog
-$rcmail_config['imap_debug'] = false;
+$rcmail_config['imap_debug'] = true;
 
 // Log LDAP conversation to <log_dir>/ldap or to syslog
 $rcmail_config['ldap_debug'] = false;
 
 // Log SMTP conversation to <log_dir>/smtp or to syslog
-$rcmail_config['smtp_debug'] = false;
+$rcmail_config['smtp_debug'] = true;
 
 // ----------------------------------
 // IMAP
@@ -75,14 +75,14 @@ $rcmail_config['smtp_debug'] = false;
 // For example %n = mail.domain.tld, %t = domain.tld
 // WARNING: After hostname change update of mail_host column in users table is
 //          required to match old user data records with the new host.
-$rcmail_config['default_host'] = $_ENV['DOVECOT_1_PORT_143_TCP_ADDR'];
+$rcmail_config['default_host'] = 'ssl://' . getenv('DOVECOT_1_PORT_993_TCP_ADDR') . '/:993';
 
 // TCP port used for IMAP connections
-$rcmail_config['default_port'] = 143;
+$rcmail_config['default_port'] = 993;
 
 // IMAP AUTH type (DIGEST-MD5, CRAM-MD5, LOGIN, PLAIN or null to use
 // best server supported one)
-$rcmail_config['imap_auth_type'] = null;
+$rcmail_config['imap_auth_type'] = 'DIGEST-MD5';
 
 // If you know your imap's folder delimiter, you can specify it here.
 // Otherwise it will be determined automatically

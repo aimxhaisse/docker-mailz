@@ -25,13 +25,10 @@ dovecot:
   ports:
   - "993:993"
   expose:
-  - "127.0.0.1:143:143"
+  - "993"
 
 spamd:
   build: docker/spamd
-  expose:
-  - "10025"
-  - "10026"
 
 roundcube:
   build: docker/roundcube

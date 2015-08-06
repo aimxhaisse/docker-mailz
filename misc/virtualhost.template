@@ -3,6 +3,7 @@
      ServerName mail.${hostname}
      DocumentRoot /var/lib/roundcube
      Alias /program/js/tiny_mce/ /usr/share/tinymce/www/
+     PassEnv DOCKERMAILZ_DOVECOT_1_PORT_993_TCP_ADDR
      <Directory /var/lib/roundcube/>
      		Options +FollowSymLinks
 		AllowOverride All
