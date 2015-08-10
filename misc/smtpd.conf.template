@@ -1,8 +1,8 @@
 pki mail.{hostname} key "/etc/ssl/private/mail.key"
-pki mail.{hostname} certificate "/etc/ssl/certs/mail.crt"
+pki mail.{hostname} certificate "/etc/ssl/mail.crt"
 
 table aliases file:/etc/aliases
-table credentials passwd:/etc/users.db
+table credentials file:/etc/users.db
 
 listen on lo port 10026 tag Filtered
 listen on 0.0.0.0 port 25 hostname {hostname} tls pki mail.{hostname}

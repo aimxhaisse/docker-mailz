@@ -18,6 +18,7 @@ RUN apt-get install -q -y							\
 RUN php5enmod mcrypt sqlite3
 RUN a2disconf roundcube
 
+ADD php.ini /etc/php5/apache2/
 ADD main.inc.php /var/lib/roundcube/config/main.inc.php
 RUN chown www-data /var/lib/roundcube/config/main.inc.php
 RUN echo 'export DOCKERMAILZ_DOVECOT_1_PORT_993_TCP_ADDR' >> /etc/apache2/envvars
