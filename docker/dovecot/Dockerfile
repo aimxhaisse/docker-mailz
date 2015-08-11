@@ -13,6 +13,6 @@ RUN groupadd -g 1000 vmail					\
 
 ENTRYPOINT chown root /etc/pki/tls/certs/mail.crt		\
  ; chown root /etc/ssl/private/mail.key				\
- ; chmod 400 /etc/pki/tls/certs/mail.crt			\
+ ; chmod 444 /etc/pki/tls/certs/mail.crt			\
  ; chmod 400 /etc/ssl/private/mail.key       			\
  ; dovecot -F

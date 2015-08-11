@@ -5,7 +5,7 @@ RUN apt-get update -q -y			\
  && apt-get install -q -y opensmtpd
 
 ENTRYPOINT chown root /etc/ssl/mail.crt		\
- && chmod 400 /etc/ssl/mail.crt      		\
+ && chmod 444 /etc/ssl/mail.crt      		\
  && chown root /etc/ssl/private/mail.key	\
  && chmod 400 /etc/ssl/private/mail.key       	\
  && smtpd -v -d
