@@ -19,11 +19,11 @@ all:	.first-init
 
 $(KEY_PRIV):
 	openssl genrsa -out $@ 4096
-	chmod 700 $@
+	chmod 400 $@
 
 $(CRT_PUB):
 	openssl req -new -x509 -key $(KEY_PRIV) -out $@
-	chmod 700 $@
+	chmod 444 $@
 
 $(CONF_SMTPD): $(TPL_SMTPD)
 	sed s/{hostname}/$(HOSTNAME)/g $(TPL_SMTPD) > $@
