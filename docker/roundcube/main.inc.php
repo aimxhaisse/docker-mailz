@@ -75,14 +75,14 @@ $rcmail_config['smtp_debug'] = true;
 // For example %n = mail.domain.tld, %t = domain.tld
 // WARNING: After hostname change update of mail_host column in users table is
 //          required to match old user data records with the new host.
-$rcmail_config['default_host'] = 'ssl://' . getenv('DOVECOT_1_PORT_993_TCP_ADDR') . '/:993';
+$rcmail_config['default_host'] = getenv('DOVECOT_1_PORT_143_TCP_ADDR');
 
 // TCP port used for IMAP connections
-$rcmail_config['default_port'] = 993;
+$rcmail_config['default_port'] = 143;
 
 // IMAP AUTH type (DIGEST-MD5, CRAM-MD5, LOGIN, PLAIN or null to use
 // best server supported one)
-$rcmail_config['imap_auth_type'] = 'DIGEST-MD5';
+$rcmail_config['imap_auth_type'] = 'PLAIN';
 
 // If you know your imap's folder delimiter, you can specify it here.
 // Otherwise it will be determined automatically

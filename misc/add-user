@@ -17,7 +17,8 @@ PASSWORD=$(head -c32 /dev/urandom | md5sum | awk '// { print $1; }')
 ID=$(docker-compose ps -q smtpd)
 CRYPTED=$(docker exec $ID smtpctl encrypt $PASSWORD)
 
-echo -e "${USERNAME}:${CRYPTED}" >> data/users.db
+# we need extra :::: fields for dovecot here (expects a valid passwd file)
+echo -e "${USERNAME}:${CRYPTED}:::::" >> data/users.db
 
 docker-compose restart smtpd
 docker-compose restart dovecot
