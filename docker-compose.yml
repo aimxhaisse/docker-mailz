@@ -24,8 +24,10 @@ dovecot:
   - data/maildirs:/var/mail
   ports:
   - "993:993"
+  - "143:143"
   expose:
   - "993"
+  - "143"
 
 spamd:
   build: docker/spamd
@@ -36,7 +38,6 @@ roundcube:
   - VIRTUAL_HOST=rain.sbrk.org
   volumes:
   - data/confs/virtualhost.conf:/etc/apache2/sites-available/roundcube.conf
-  - data/confs/mail.crt:/etc/mail.crt
   expose:
   - "80"
   links:
