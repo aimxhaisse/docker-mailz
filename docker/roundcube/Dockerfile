@@ -22,6 +22,7 @@ ADD php.ini /etc/php5/apache2/
 ADD main.inc.php /var/lib/roundcube/config/main.inc.php
 RUN chown www-data /var/lib/roundcube/config/main.inc.php
 RUN echo 'export DOCKERMAILZ_DOVECOT_1_PORT_993_TCP_ADDR' >> /etc/apache2/envvars
+RUN echo 'export DOCKERMAILZ_DOVECOT_1_PORT_143_TCP_ADDR' >> /etc/apache2/envvars
 
 ENTRYPOINT a2ensite roundcube							\
  && a2dissite 000-default 							\
