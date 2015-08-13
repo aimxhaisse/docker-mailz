@@ -3,8 +3,6 @@
      ServerName mail.${hostname}
      DocumentRoot /var/www/roundcube
 
-     PassEnv DOVECOT_PORT_993_TCP_ADDR
-
      <Directory /var/www/roundcube/>
      		Options +FollowSymLinks
 		AllowOverride All

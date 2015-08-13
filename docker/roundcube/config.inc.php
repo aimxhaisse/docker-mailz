@@ -19,7 +19,7 @@ $config['db_dsnw'] = 'sqlite:////var/www/roundcube/data/roundcube.db?mode=0646';
 // %d - domain (http hostname $_SERVER['HTTP_HOST'] without the first part)
 // %s - domain name after the '@' from e-mail address provided at login screen
 // For example %n = mail.domain.tld, %t = domain.tld
-$config['default_host'] = 'ssl://' . getenv('DOVECOT_PORT_993_TCP_ADDR');
+$config['default_host'] = 'ssl://dovecot';
 
 // TCP port used for IMAP connections
 $config['default_port'] = 993;
