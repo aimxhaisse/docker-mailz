@@ -2,27 +2,46 @@ FROM ubuntu:vivid
 MAINTAINER Sébastien Rannou <mxs@sbrk.org> (@aimxhaisse)
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV ROUNDCUBE_TARBALL https://downloads.sourceforge.net/project/roundcubemail/roundcubemail/1.1.2/roundcubemail-1.1.2-complete.tar.gz
 
 RUN apt-get update
 
-RUN ( echo "roundcube-core  roundcube/dbconfig-install      boolean true"	\
-      echo "roundcube-core  roundcube/database-type select  sqlite3"; )		\
-      | debconf-set-selections
-
 RUN apt-get install -q -y							\
-    roundcube-sqlite3								\
-    roundcube-plugins		    						\
-    roundcube-plugins-extra							\
-    apache2
+    apache2									\
+    libapache2-mod-php5								\
+    php5									\
+    php-auth									\
+    php-mail-mime								\
+    php-mail-mimedecode								\
+    php-net-smtp								\
+    php-net-socket								\
+    php5-intl									\
+    php5-json									\
+    php5-common									\
+    php5-mcrypt									\
+    php5-gd									\
+    php5-pspell									\
+    php-auth-sasl 								\
+    php-crypt-gpg								\
+    php5-sqlite									\
+    sqlite3									\
+    wget
 
 RUN php5enmod mcrypt sqlite3
-RUN a2disconf roundcube
 
-ADD php.ini /etc/php5/apache2/
-ADD main.inc.php /var/lib/roundcube/config/main.inc.php
-RUN chown www-data /var/lib/roundcube/config/main.inc.php
-RUN echo 'export DOCKERMAILZ_DOVECOT_1_PORT_993_TCP_ADDR' >> /etc/apache2/envvars
-RUN echo 'export DOCKERMAILZ_DOVECOT_1_PORT_143_TCP_ADDR' >> /etc/apache2/envvars
+RUN wget $ROUNDCUBE_TARBALL -O /roundcube.tar.gz				\
+ && tar -xf /roundcube.tar.gz -C /var/www					\
+ && mv /var/www/roundcubemail-1.1.2 /var/www/roundcube				\
+ && chown -R www-data:www-data /var/www/roundcube				\
+ && rm /roundcube.tar.gz
+
+RUN mkdir /var/www/roundcube/data/						\
+ && touch /var/www/roundcube/data/roundcube.db					\
+ && chown -R www-data:www-data /var/www/roundcube/data/
+
+RUN echo 'export DOVECOT_PORT_993_TCP_ADDR' >> /etc/apache2/envvars
+
+ADD config.inc.php /var/www/roundcube/config/config.inc.php
 
 ENTRYPOINT a2ensite roundcube							\
  && a2dissite 000-default 							\

@@ -1,34 +1,35 @@
 <VirtualHost *>
      ServerAdmin root@{hostname}
      ServerName mail.${hostname}
-     DocumentRoot /var/lib/roundcube
-     Alias /program/js/tiny_mce/ /usr/share/tinymce/www/
-     PassEnv DOCKERMAILZ_DOVECOT_1_PORT_993_TCP_ADDR
-     <Directory /var/lib/roundcube/>
+     DocumentRoot /var/www/roundcube
+
+     PassEnv DOVECOT_PORT_993_TCP_ADDR
+
+     <Directory /var/www/roundcube/>
      		Options +FollowSymLinks
 		AllowOverride All
 		Require all granted
      </Directory>
-     <Directory /var/lib/roundcube/config>
+     <Directory /var/www/roundcube/config>
      		Options -FollowSymLinks
 		AllowOverride None
      </Directory>
-     <Directory /var/lib/roundcube/temp>
-     		Options -FollowSymLinks
-		AllowOverride None
-		Order allow,deny
-		Deny from all
-     </Directory>
-     <Directory /var/lib/roundcube/logs>
+     <Directory /var/www/roundcube/temp>
      		Options -FollowSymLinks
 		AllowOverride None
 		Order allow,deny
 		Deny from all
      </Directory>
-     <Directory /usr/share/tinymce/www/>
-     		Options Indexes MultiViews FollowSymLinks
+     <Directory /var/www/roundcube/data>
+     		Options -FollowSymLinks
 		AllowOverride None
 		Order allow,deny
-		Allow from all
+		Deny from all
+     </Directory>
+     <Directory /var/www/roundcube/logs>
+     		Options -FollowSymLinks
+		AllowOverride None
+		Order allow,deny
+		Deny from all
      </Directory>
 </VirtualHost>

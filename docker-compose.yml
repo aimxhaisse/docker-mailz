@@ -38,6 +38,7 @@ roundcube:
   - VIRTUAL_HOST=rain.sbrk.org
   volumes:
   - data/confs/virtualhost.conf:/etc/apache2/sites-available/roundcube.conf
+  - data/roundcube:/var/www/roundcube/data
   expose:
   - "80"
   links:
