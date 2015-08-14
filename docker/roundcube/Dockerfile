@@ -39,8 +39,6 @@ RUN mkdir /var/www/roundcube/data/						\
  && touch /var/www/roundcube/data/roundcube.db					\
  && chown -R www-data:www-data /var/www/roundcube/data/
 
-RUN echo 'export DOVECOT_PORT_993_TCP_ADDR' >> /etc/apache2/envvars
-
 ADD config.inc.php /var/www/roundcube/config/config.inc.php
 
 ENTRYPOINT a2ensite roundcube							\
