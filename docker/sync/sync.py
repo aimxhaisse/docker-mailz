@@ -18,6 +18,7 @@ import time
 CONFIG_PATH = '/config.ini'
 TARGET_PATH = '/confs'
 SMTPD_TEMPLATE = '/smtpd.conf.template'
+VHOST_TEMPLATE = '/virtualhost.template'
 
 
 class MailzSync(object):
@@ -27,6 +28,14 @@ class MailzSync(object):
         self.now = time.strftime("%c")
         self.config = configparser.RawConfigParser()
         self.config.read(CONFIG_PATH)
+
+        if self.config.has_option('global', 'domain'):
+            hostname = self.config.get('global', 'domain')
+        if not hostname:
+            hostname = os.getenv('DEFAULT_HOSTNAME')
+
+        self.settings = {}
+        self.settings['hostname'] = hostname
 
     def sync_aliases(self):
         """ I recreate the aliases file.
@@ -60,16 +69,17 @@ class MailzSync(object):
             template = input.read()
             with open('{0}/smtpd.conf'.format(TARGET_PATH), 'w') as output:
                 output.write('# Generated on {0}\n\n'.format(self.now))
+                output.write(template.format(**self.settings))
 
-                if self.config.has_option('global', 'domain'):
-                    hostname = self.config.get('global', 'domain')
-                if not hostname:
-                    hostname = os.getenv('DEFAULT_HOSTNAME')
-
-                settings = {}
-                settings['hostname'] = hostname
-
-                output.write(template.format(**settings))
+    def sync_vhost(self):
+        """ I synchronize virtualhost's configuration file.
+        """
+        with open(VHOST_TEMPLATE, 'r') as input:
+            template = input.read()
+            with open('{0}/virtualhost.conf'.format(
+                    TARGET_PATH), 'w') as output:
+                output.write('# Generated on {0}\n\n'.format(self.now))
+                output.write(template.format(**self.settings))
 
 
 if __name__ == '__main__':
@@ -77,4 +87,5 @@ if __name__ == '__main__':
     m.sync_aliases()
     m.sync_users()
     m.sync_smtpd()
+    m.sync_vhost()
 

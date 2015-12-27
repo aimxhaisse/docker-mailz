@@ -1,6 +1,6 @@
 <VirtualHost *>
      ServerAdmin root@{hostname}
-     ServerName mail.${hostname}
+     ServerName mail.{hostname}
      DocumentRoot /var/www/roundcube
 
      <Directory /var/www/roundcube/>

@@ -8,5 +8,6 @@ configs:
 		-v $(shell pwd)/data/confs:/confs 				\
 		-v $(shell pwd)/config.ini:/config.ini 				\
 		-v $(shell pwd)/misc/smtpd.conf.template:/smtpd.conf.template 	\
+		-v $(shell pwd)/misc/virtualhost.template:/virtualhost.template	\
 		-e DEFAULT_HOSTNAME=$(shell hostname -f)			\
 		--rm --name dockermailz_sync_run dockermailz_sync
