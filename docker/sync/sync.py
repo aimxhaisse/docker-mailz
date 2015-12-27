@@ -9,6 +9,7 @@
 """
 
 import configparser
+import os
 import shlex
 import subprocess
 import time
@@ -16,6 +17,7 @@ import time
 
 CONFIG_PATH = '/config.ini'
 TARGET_PATH = '/confs'
+SMTPD_TEMPLATE = '/smtpd.conf.template'
 
 
 class MailzSync(object):
@@ -51,8 +53,28 @@ class MailzSync(object):
                 password = password.decode().strip()
                 output.write('{0}:{1}:::::\n'.format(login, str(password)))
 
+    def sync_smtpd(self):
+        """ I synchronize opensmtpd's configuration file.
+        """
+        with open(SMTPD_TEMPLATE, 'r') as input:
+            template = input.read()
+            with open('{0}/smtpd.conf'.format(TARGET_PATH), 'w') as output:
+                output.write('# Generated on {0}\n\n'.format(self.now))
+
+                if self.config.has_option('global', 'domain'):
+                    hostname = self.config.get('global', 'domain')
+                if not hostname:
+                    hostname = os.getenv('DEFAULT_HOSTNAME')
+
+                settings = {}
+                settings['hostname'] = hostname
+
+                output.write(template.format(**settings))
+
 
 if __name__ == '__main__':
     m = MailzSync()
     m.sync_aliases()
     m.sync_users()
+    m.sync_smtpd()
+
