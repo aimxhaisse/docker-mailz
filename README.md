@@ -1,6 +1,6 @@
 # Docker Mailz
 
-Mails. Lots of mails.
+Mailz. Lots of mailz.
 
 ## Setup
 
