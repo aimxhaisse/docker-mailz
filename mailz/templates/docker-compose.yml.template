@@ -13,6 +13,7 @@ smtpd:
   - "587:587"
   links:
   - spamd
+  - dovecot
 
 dovecot:
   build: ../../dockerfiles/dovecot

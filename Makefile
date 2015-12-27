@@ -42,6 +42,9 @@ start:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz build
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d
 
+stop:
+	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz stop
+
 backup:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz stop
 	mkdir -p $(BACKUP)
@@ -49,4 +52,4 @@ backup:
 	docker run --rm -v $(shell pwd)/mailz/data:/data alpine tar -zcvf - /data > $(BACKUP)/docker-mailz-backup-$(shell date +%s).tar.gz
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d
 
-.PHONY: backup start reload all
+.PHONY: backup start reload all stop
