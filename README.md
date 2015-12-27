@@ -57,7 +57,7 @@ file, a key is generated for you.
 Similarily, if you don't provide a `cert` in the configuration file,
 a self-signed certificate is derived from `privkey`.
 
-## Virtualhosts
+## VirtualHosts
 
 Docker Mailz can be coupled with
 [nginx-proxy](https://github.com/jwilder/nginx-proxy), if you already
