@@ -49,6 +49,13 @@ class MailzSync(object):
                     for alias in aliases[1:]:
                         output.write('{0}: {1}\n'.format(aliases[0], alias))
 
+    def sync_mailname(self):
+        """ I create the mailname file.
+        """
+        target = '{0}/mailname'.format(TARGET_PATH)
+        with open(target, 'w') as output:
+            output.write('{0}\n'.format(self.settings['hostname']))
+
     def sync_users(self):
         """ I recreate the users file.
         """
@@ -89,6 +96,7 @@ class MailzSync(object):
 if __name__ == '__main__':
     m = MailzSync()
     m.sync_aliases()
+    m.sync_mailname()
     m.sync_users()
     m.sync_smtpd()
     m.sync_vhost()
