@@ -94,12 +94,41 @@ class MailzSync(object):
         """ Simply overwrite the file.
         """
         shutil.copyfile(source, target)
+        return True
 
     def do_gen_privkey(self, target):
         """ Generates a private key.
         """
         cmd = 'openssl genrsa -out {0} 4096'.format(target)
         subprocess.check_call(cmd, shell=True)
+        return True
+
+    def do_gen_cert(self, privkey, output):
+        """ Generates a self-signed certificate.
+        """
+        cmd = 'echo -e "\n\n\n\n{0}\n\n\n" '
+        cmd += ' | '
+        cmd += 'openssl req -new -x509 -key {1} -out {2} &> /dev/null'
+        cmd = cmd.format(self.settings['hostname'], privkey, output)
+        subprocess.check_call(cmd.format(), shell=True)
+
+    def sync_cert(self, force):
+        """ I synchronize the certificate of generate a self-signed one.
+        """
+        privkey = '{0}/privkey.pem'.format(TARGET_PATH)
+        target = '{0}/cert.pem'.format(TARGET_PATH)
+        source = '/cert.pem'
+        if force:
+            return self.do_gen_cert(privkey, target)
+        if not os.path.exists(target):
+            if os.path.exists(source):
+                return self.do_copy(source, target)
+            return self.do_gen_cert(privkey, target)
+        if os.path.exists(source):
+            source_sum = hashlib.md5(source).hexdigest()
+            target_sum = hashlib.md5(target).hexdigest()
+            if source_sum != target_sum:
+                return self.do_copy(source, target)
 
     def sync_privkey(self):
         """ I synchronize the private key or generate a new one.
@@ -109,15 +138,13 @@ class MailzSync(object):
 
         if not os.path.exists(target):
             if os.path.exists(source):
-                self.do_copy(source, target)
-            else:
-                self.do_gen_privkey(target)
-        else:
-            if os.path.exists(source):
-                source_sum = hashlib.md5(source).hexdigest()
-                target_sum = hashlib.md5(target).hexdigest()
-                if source_sum != target_sum:
-                    self.do_copy(source, target)
+                return self.do_copy(source, target)
+            return self.do_gen_privkey(target)
+        if os.path.exists(source):
+            source_sum = hashlib.md5(source).hexdigest()
+            target_sum = hashlib.md5(target).hexdigest()
+            if source_sum != target_sum:
+                return self.do_copy(source, target)
 
 
 if __name__ == '__main__':
@@ -127,4 +154,5 @@ if __name__ == '__main__':
     m.sync_users()
     m.sync_smtpd()
     m.sync_vhost()
-    m.sync_privkey()
+    force_cert_reload = m.sync_privkey()
+    m.sync_cert(force=force_cert_reload)
