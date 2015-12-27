@@ -5,7 +5,7 @@ all:	configs
 configs:
 	docker build -t mailz_sync mailz/docker/sync
 	docker run \
-		-v $(shell pwd)/data/confs:/confs 						\
+		-v $(shell pwd)/mailz/data/confs:/confs 					\
 		-v $(shell pwd)/config.ini:/config.ini 						\
 		-v $(shell pwd)/mailz/templates/smtpd.conf.template:/smtpd.conf.template 	\
 		-v $(shell pwd)/mailz/templates/virtualhost.template:/virtualhost.template	\

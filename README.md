@@ -23,7 +23,7 @@ and run `make`.
 
 ## Backups
 
-    cp -r data backup-$(date +%s)
+    cp -r mailz/data backup-$(date +%s)
 
 ## SSL
 
