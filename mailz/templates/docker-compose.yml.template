@@ -1,5 +1,5 @@
 smtpd:
-  build: ../../docker/opensmtpd
+  build: ../../dockerfiles/opensmtpd
   volumes:
   - cert.pem:/etc/ssl/mail.crt
   - privkey.pem:/etc/ssl/private/mail.key
@@ -15,7 +15,7 @@ smtpd:
   - spamd
 
 dovecot:
-  build: ../../docker/dovecot
+  build: ../../dockerfiles/dovecot
   volumes:
   - cert.pem:/etc/pki/tls/certs/mail.crt
   - privkey.pem:/etc/ssl/private/mail.key
@@ -29,10 +29,10 @@ dovecot:
   - "143"
 
 spamd:
-  build: ../../docker/spamd
+  build: ../../dockerfiles/spamd
 
 roundcube:
-  build: ../../docker/roundcube
+  build: ../../dockerfiles/roundcube
   environment:
   - VIRTUAL_HOST={virtualhost}
   volumes:

@@ -1,5 +1,10 @@
 # Mailz, lots of mailz
 
+# We do things in two passes:
+#
+# - we spawn a 'sync' container to gen all configs files from config.ini
+# - we then (re)spawn all services
+
 # Here we attempt to resolve the privkey/cert path from config.ini so
 # we can mount them in the 'sync' container. This is required so the
 # 'sync' script can decide wether or not we need to regenerate
@@ -17,10 +22,10 @@ endif
 
 # Enough for the trickeries, let's go
 
-all:	configs reload
+all:	reload start
 
-configs:
-	docker build -t mailz_sync mailz/docker/sync
+reload:
+	docker build -t mailz_sync mailz/dockerfiles/sync
 	docker run \
 		-v $(shell pwd)/mailz/data/confs:/confs 							\
 		-v $(shell pwd)/config.ini:/config.ini 								\
@@ -29,6 +34,6 @@ configs:
 		-e DEFAULT_HOSTNAME=$(shell hostname -f)							\
 		--rm --name mailz_sync_run mailz_sync
 
-reload:
+start:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz build
-	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up
+	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d
