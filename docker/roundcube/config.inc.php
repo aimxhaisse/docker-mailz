@@ -58,7 +58,15 @@ $config['imap_timeout'] = 5;
 // %d - domain (http hostname $_SERVER['HTTP_HOST'] without the first part)
 // %z - IMAP domain (IMAP hostname without the first part)
 // For example %n = mail.domain.tld, %t = domain.tld
-$config['smtp_server'] = 'sbrk.org';
+$config['smtp_server'] = 'tls://smtpd/';
+$config['smtp_port'] = 587;
+$config['smtp_conn_options'] = array (
+  'ssl'           => array (
+     'allow_self_signed'	=> true,
+     'verify_peer'		=> false,
+     'verify_peer_name'         => false,
+  ),
+);
 
 // SMTP username (if required) if you use %u as the username Roundcube
 // will use the current username for login

@@ -2,7 +2,8 @@ FROM ubuntu:vivid
 MAINTAINER Sébastien Rannou <mxs@sbrk.org> (@aimxhaisse)
 
 RUN apt-get update -q -y			\
- && apt-get install -q -y opensmtpd
+ && apt-get install -q -y opensmtpd		\
+ && apt-get clean
 
 ENTRYPOINT chown root /etc/ssl/mail.crt		\
  && chmod 444 /etc/ssl/mail.crt      		\

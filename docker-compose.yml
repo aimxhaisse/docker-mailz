@@ -43,3 +43,4 @@ roundcube:
   - "80"
   links:
   - dovecot
+  - smtpd

@@ -1,12 +1,12 @@
-pki mail.{hostname} key "/etc/ssl/private/mail.key"
-pki mail.{hostname} certificate "/etc/ssl/mail.crt"
+pki {hostname} key "/etc/ssl/private/mail.key"
+pki {hostname} certificate "/etc/ssl/mail.crt"
 
 table aliases file:/etc/aliases
 table credentials file:/etc/users.db
 
 listen on lo port 10026 tag Filtered
-listen on 0.0.0.0 port 25 hostname {hostname} tls pki mail.{hostname}
-listen on 0.0.0.0 port 587 hostname {hostname} tls-require pki mail.{hostname} auth <credentials>
+listen on 0.0.0.0 port 25 hostname {hostname} tls pki {hostname}
+listen on 0.0.0.0 port 587 hostname {hostname} tls-require pki {hostname} auth <credentials>
 
 accept tagged Filtered for any alias <aliases> deliver to maildir "~/mails"
 accept from any for domain "{hostname}" relay via "smtp://127.0.0.1:10025"

@@ -4,6 +4,8 @@ Mails. Lots of mails.
 
 ## Setup
 
+Edit `config.ini`, then:
+
     make
 
 You now have:
@@ -15,14 +17,9 @@ You now have:
 
 ## Common Tasks
 
-### Add aliases
-
-    $EDITOR data/confs/aliases
-    docker-compose restart
-
-### Add users
-
-    misc/add-user <username>
+All configuration is done through the `config.ini` file, if you want
+to add a user, edit a password, change your domain name… Edit the file
+and run `make`.
 
 ### Backups
 
