@@ -12,12 +12,16 @@
 
 SYNC_PRIVKEY=$(shell awk -F '=' '// { if ($$1 == "privkey") { print $$2; } }' < config.ini)
 SYNC_CERT=$(shell awk -F '=' '// { if ($$1 == "cert") { print $$2; } }' < config.ini)
+BACKUP=$(shell awk -F '=' '// { if ($$1 == "backup") { print $$2; } }' < config.ini)
 
 ifneq ($(SYNC_PRIVKEY),)
 	EXTRA_VOLUMES += -v $(shell readlink -f $(SYNC_PRIVKEY)):/privkey.pem
 endif
 ifneq ($(SYNC_CERT),)
 	EXTRA_VOLUMES += -v $(shell readlink -f $(SYNC_CERT)):/cert.pem
+endif
+ifeq ($(BACKUP),)
+	BACKUP=backups
 endif
 
 # Enough for the trickeries, let's go
@@ -40,9 +44,9 @@ start:
 
 backup:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz stop
-	mkdir -p backups
+	mkdir -p $(BACKUP)
 
 	# hack to be root without using sudo
-	docker run --rm -v $(shell pwd)/mailz/data:/data alpine tar -zcvf - /data > backups/$(shell date +%s).tar.gz
+	docker run --rm -v $(shell pwd)/mailz/data:/data alpine tar -zcvf - /data > $(BACKUP)/docker-mailz-backup-$(shell date +%s).tar.gz
 
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d

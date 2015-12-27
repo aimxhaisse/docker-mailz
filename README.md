@@ -22,6 +22,7 @@ You now have:
 - aliases
 - SSL
 - antispam
+- facilities to backup
 
 ## Common Tasks
 
