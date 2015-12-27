@@ -37,3 +37,12 @@ reload:
 start:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz build
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d
+
+backup:
+	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz stop
+	mkdir -p backups
+
+	# hack to be root without using sudo
+	docker run --rm -v $(shell pwd)/mailz/data:/data alpine tar -zcvf - /data > backups/$(shell date +%s).tar.gz
+
+	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d

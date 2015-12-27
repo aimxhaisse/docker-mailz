@@ -39,6 +39,10 @@ opening a ticket :-)
 
     cp -r mailz/data backup-$(date +%s)
 
+Or if you are lazy:
+
+    make backup
+
 ## SSL
 
 By default, if you don't provide a `privkey` in the configuration
