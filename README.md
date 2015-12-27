@@ -21,6 +21,14 @@ All configuration is done through the `config.ini` file, if you want
 to add a user, edit a password, change your domain name… Edit the file
 and run `make`.
 
-### Backups
+## Backups
 
     cp -r data backup-$(date +%s)
+
+## SSL
+
+By default, if you don't provide a `ssl_privkey` in the configuration
+file, a key is generated for you.
+
+Similarily, if you don't provide a `ssl_cert` in the configuration file,
+a self-signed certificate is derived from the private key.
