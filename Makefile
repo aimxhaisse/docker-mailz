@@ -21,7 +21,7 @@ ifneq ($(SYNC_CERT),)
 	EXTRA_VOLUMES += -v $(shell readlink -f $(SYNC_CERT)):/cert.pem
 endif
 ifeq ($(BACKUP),)
-	BACKUP=backups
+	BACKUP=mailz/backups
 endif
 
 # Enough for the trickeries, let's go

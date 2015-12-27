@@ -44,6 +44,10 @@ Or if you are lazy:
 
     make backup
 
+This will stop all containers nicely, perform the backup, and restart
+them. Backups are by default stored in `mailz/backups` (can be
+configured in `config.ini`).
+
 ## SSL
 
 By default, if you don't provide a `privkey` in the configuration
