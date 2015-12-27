@@ -9,6 +9,8 @@
 """
 
 import configparser
+import shlex
+import subprocess
 import time
 
 
@@ -36,7 +38,21 @@ class MailzSync(object):
                     for alias in aliases[1:]:
                         output.write('{0}: {1}\n'.format(aliases[0], alias))
 
+    def sync_users(self):
+        """ I recreate the users file.
+        """
+        target = '{0}/users'.format(TARGET_PATH)
+        with open(target, 'w') as output:
+            output.write('# Generated on {0}\n\n'.format(self.now))
+            for userlist, clear_password in self.config.items('users'):
+                login = userlist.split(',')[0]
+                cmd = 'smtpctl encrypt {0}'.format(shlex.quote(clear_password))
+                password = subprocess.check_output(cmd, shell=True)
+                password = password.decode().strip()
+                output.write('{0}:{1}:::::\n'.format(login, str(password)))
+
 
 if __name__ == '__main__':
     m = MailzSync()
     m.sync_aliases()
+    m.sync_users()
