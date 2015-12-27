@@ -19,7 +19,7 @@ dovecot:
   volumes:
   - cert.pem:/etc/pki/tls/certs/mail.crt
   - privkey.pem:/etc/ssl/private/mail.key
-  - users.db:/etc/users.db
+  - users:/etc/users.db
   - ../maildirs:/var/mail
   ports:
   - "993:993"

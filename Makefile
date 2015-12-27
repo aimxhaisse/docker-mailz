@@ -30,6 +30,5 @@ configs:
 		--rm --name mailz_sync_run mailz_sync
 
 reload:
-	touch mailz/data/users.db
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz build
-	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d
+	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up
