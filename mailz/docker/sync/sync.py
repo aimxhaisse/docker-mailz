@@ -9,8 +9,10 @@
 """
 
 import configparser
+import hashlib
 import os
 import shlex
+import shutil
 import subprocess
 import time
 
@@ -88,9 +90,34 @@ class MailzSync(object):
                 output.write('# Generated on {0}\n\n'.format(self.now))
                 output.write(template.format(**self.settings))
 
-    def sync_priv_key(self):
+    def do_copy(self, source, target):
+        """ Simply overwrite the file.
+        """
+        shutil.copyfile(source, target)
+
+    def do_gen_privkey(self, target):
+        """ Generates a private key.
+        """
+        cmd = 'openssl genrsa -out {0} 4096'.format(target)
+        subprocess.check_call(cmd, shell=True)
+
+    def sync_privkey(self):
         """ I synchronize the private key or generate a new one.
         """
+        target = '{0}/privkey.pem'.format(TARGET_PATH)
+        source = '/privkey.pem'
+
+        if not os.path.exists(target):
+            if os.path.exists(source):
+                self.do_copy(source, target)
+            else:
+                self.do_gen_privkey(target)
+        else:
+            if os.path.exists(source):
+                source_sum = hashlib.md5(source).hexdigest()
+                target_sum = hashlib.md5(target).hexdigest()
+                if source_sum != target_sum:
+                    self.do_copy(source, target)
 
 
 if __name__ == '__main__':
@@ -100,4 +127,4 @@ if __name__ == '__main__':
     m.sync_users()
     m.sync_smtpd()
     m.sync_vhost()
-    m.sync_priv_key()
+    m.sync_privkey()

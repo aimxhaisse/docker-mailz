@@ -27,8 +27,8 @@ and run `make`.
 
 ## SSL
 
-By default, if you don't provide a `ssl_privkey` in the configuration
+By default, if you don't provide a `privkey` in the configuration
 file, a key is generated for you.
 
-Similarily, if you don't provide a `ssl_cert` in the configuration file,
-a self-signed certificate is derived from the private key.
+Similarily, if you don't provide a `cert` in the configuration file,
+a self-signed certificate is derived from `privkey`.

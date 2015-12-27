@@ -1,4 +1,21 @@
-# I systematically create all config files and respawn containers.
+# Mailz, lots of mailz
+
+# Here we attempt to resolve the privkey/cert path from config.ini so
+# we can mount them in the 'sync' container. This is required so the
+# 'sync' script can decide wether or not we need to regenerate
+# certicates.
+
+SYNC_PRIVKEY=$(shell awk -F '=' '// { if ($$1 == "privkey") { print $$2; } }' < config.ini)
+SYNC_CERT=$(shell awk -F '=' '// { if ($$1 == "cert") { print $$2; } }' < config.ini)
+
+ifneq ($(SYNC_PRIVKEY),)
+	EXTRA_VOLUMES += -v $(shell readlink -f $(SYNC_PRIVKEY)):/privkey.pem
+endif
+ifneq ($(SYNC_CERT),)
+	EXTRA_VOLUMES += -v $(shell readlink -f $(SYNC_CERT)):/cert.pem
+endif
+
+# Enough for the trickeries, let's go
 
 all:	configs
 
@@ -9,5 +26,6 @@ configs:
 		-v $(shell pwd)/config.ini:/config.ini 						\
 		-v $(shell pwd)/mailz/templates/smtpd.conf.template:/smtpd.conf.template 	\
 		-v $(shell pwd)/mailz/templates/virtualhost.template:/virtualhost.template	\
+		$(EXTRA_VOLUMES)								\
 		-e DEFAULT_HOSTNAME=$(shell hostname -f)					\
-		--rm --name mailz_sync_run dockermailz_sync
+		--rm --name mailz_sync_run mailz_sync
