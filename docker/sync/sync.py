@@ -81,6 +81,10 @@ class MailzSync(object):
                 output.write('# Generated on {0}\n\n'.format(self.now))
                 output.write(template.format(**self.settings))
 
+    def sync_priv_key(self):
+        """ I synchronize the private key or generate a new one.
+        """
+
 
 if __name__ == '__main__':
     m = MailzSync()
@@ -88,4 +92,4 @@ if __name__ == '__main__':
     m.sync_users()
     m.sync_smtpd()
     m.sync_vhost()
-
+    m.sync_priv_key()
