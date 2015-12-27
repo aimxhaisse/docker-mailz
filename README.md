@@ -4,7 +4,8 @@ Mailz. Lots of mailz.
 
 ## Setup
 
-Make sure you have `Docker` and `docker-compose`, edit `config.ini`,
+Make sure you have [docker](https://www.docker.com/) and
+[docker-compose](https://docs.docker.com/compose/), edit `config.ini`,
 then:
 
     make
@@ -12,9 +13,9 @@ then:
 You now have:
 
 - a SMTP server configured for your hostname forwarding mails to…
-- an SPAM filter which forwards regular mails to…
+- a SPAM filter which forwards regular mails to…
 - an IMAP server which is regularily polled by…
-- a RoundCube web interface waiting for you
+- a RoundCube web interface waiting for you.
 
 ## Features
 
@@ -26,8 +27,8 @@ You now have:
 
 ## Common Tasks
 
-All configuration is done through the `config.ini` file, if you want
-to add a user, edit a password, change your domain name… Edit the file
+All configuration is done via the `config.ini` file, if you want to
+add a user, edit a password, change your domain name… Edit the file
 and run `make`.
 
 You can also edit template configuration files that are in

@@ -24,7 +24,7 @@ ifeq ($(BACKUP),)
 	BACKUP=mailz/backups
 endif
 
-# Enough for the trickeries, let's go
+# Enough for the trickeries.
 
 all:	reload start
 
@@ -45,10 +45,8 @@ start:
 backup:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz stop
 	mkdir -p $(BACKUP)
-
 	# hack to be root without using sudo
 	docker run --rm -v $(shell pwd)/mailz/data:/data alpine tar -zcvf - /data > $(BACKUP)/docker-mailz-backup-$(shell date +%s).tar.gz
-
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d
 
 .PHONY: backup start reload all
