@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
 
-""" I generate and overwrite the following configurations:
-
-- /etc/aliases (smtpd)
-- /etc/mailname (smtpd)
-- /etc/smtpd.conf (smtpd)
-- /etc/apache2/sites-available/roundcube.conf (roundcube)
+""" I generate and overwrite various configuration files.
 """
 
 import configparser
@@ -19,8 +14,9 @@ import time
 
 CONFIG_PATH = '/config.ini'
 TARGET_PATH = '/confs'
-SMTPD_TEMPLATE = '/smtpd.conf.template'
-VHOST_TEMPLATE = '/virtualhost.template'
+SMTPD_TEMPLATE = '/templates/smtpd.conf.template'
+VHOST_TEMPLATE = '/templates/virtualhost.template'
+DOCKER_COMPOSE_TEMPLATE = '/templates/docker-compose.yml.template'
 
 
 class MailzSync(object):
@@ -36,8 +32,14 @@ class MailzSync(object):
         if not hostname:
             hostname = os.getenv('DEFAULT_HOSTNAME')
 
+        if self.config.has_option('global', 'virtualhost'):
+            virtualhost = self.config.get('global', 'virtualhost')
+        if not virtualhost:
+            virtualhost = 'mail.{0}'.format(hostname)
+
         self.settings = {}
         self.settings['hostname'] = hostname
+        self.settings['virtualhost'] = virtualhost
 
     def sync_aliases(self):
         """ I recreate the aliases file.
@@ -80,6 +82,16 @@ class MailzSync(object):
                 output.write('# Generated on {0}\n\n'.format(self.now))
                 output.write(template.format(**self.settings))
 
+    def sync_docker_compose(self):
+        """ I synchronize docker-compose.yml file.
+        """
+        with open(DOCKER_COMPOSE_TEMPLATE, 'r') as input:
+            template = input.read()
+            with open('{0}/docker-compose.yml'.format(
+                    TARGET_PATH), 'w') as output:
+                output.write('# Generated on {0}\n\n'.format(self.now))
+                output.write(template.format(**self.settings))
+
     def sync_vhost(self):
         """ I synchronize virtualhost's configuration file.
         """
@@ -106,11 +118,11 @@ class MailzSync(object):
     def do_gen_cert(self, privkey, output):
         """ Generates a self-signed certificate.
         """
-        cmd = 'echo -e "\n\n\n\n{0}\n\n\n" '
+        cmd = 'echo -e "\\n\\n\\n\\n{0}\\n\\n\\n" '
         cmd += ' | '
-        cmd += 'openssl req -new -x509 -key {1} -out {2} &> /dev/null'
+        cmd += 'openssl req -new -x509 -key {1} -out {2}'
         cmd = cmd.format(self.settings['hostname'], privkey, output)
-        subprocess.check_call(cmd.format(), shell=True)
+        subprocess.check_call(cmd, shell=True)
 
     def sync_cert(self, force):
         """ I synchronize the certificate of generate a self-signed one.
@@ -152,6 +164,7 @@ if __name__ == '__main__':
     m.sync_aliases()
     m.sync_mailname()
     m.sync_users()
+    m.sync_docker_compose()
     m.sync_smtpd()
     m.sync_vhost()
     force_cert_reload = m.sync_privkey()

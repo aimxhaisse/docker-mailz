@@ -35,13 +35,12 @@ RUN wget $ROUNDCUBE_TARBALL -O /roundcube.tar.gz				\
  && chown -R www-data:www-data /var/www/roundcube				\
  && rm /roundcube.tar.gz
 
-RUN mkdir /var/www/roundcube/data/						\
- && touch /var/www/roundcube/data/roundcube.db					\
- && chown -R www-data:www-data /var/www/roundcube/data/
-
 ADD config.inc.php /var/www/roundcube/config/config.inc.php
 
 ENTRYPOINT a2ensite roundcube							\
  && a2dissite 000-default 							\
  && . /etc/apache2/envvars 							\
+ && mkdir -p /var/www/roundcube/data/						\
+ && touch /var/www/roundcube/data/roundcube.db					\
+ && chown -R www-data:www-data /var/www/roundcube/data/				\
  && apache2ctl -D FOREGROUND

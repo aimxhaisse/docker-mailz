@@ -17,15 +17,19 @@ endif
 
 # Enough for the trickeries, let's go
 
-all:	configs
+all:	configs reload
 
 configs:
 	docker build -t mailz_sync mailz/docker/sync
 	docker run \
-		-v $(shell pwd)/mailz/data/confs:/confs 					\
-		-v $(shell pwd)/config.ini:/config.ini 						\
-		-v $(shell pwd)/mailz/templates/smtpd.conf.template:/smtpd.conf.template 	\
-		-v $(shell pwd)/mailz/templates/virtualhost.template:/virtualhost.template	\
-		$(EXTRA_VOLUMES)								\
-		-e DEFAULT_HOSTNAME=$(shell hostname -f)					\
+		-v $(shell pwd)/mailz/data/confs:/confs 							\
+		-v $(shell pwd)/config.ini:/config.ini 								\
+		-v $(shell pwd)/mailz/templates:/templates				 			\
+		$(EXTRA_VOLUMES)										\
+		-e DEFAULT_HOSTNAME=$(shell hostname -f)							\
 		--rm --name mailz_sync_run mailz_sync
+
+reload:
+	touch mailz/data/users.db
+	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz build
+	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d

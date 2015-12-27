@@ -1,0 +1,45 @@
+smtpd:
+  build: ../../docker/opensmtpd
+  volumes:
+  - cert.pem:/etc/ssl/mail.crt
+  - privkey.pem:/etc/ssl/private/mail.key
+  - aliases:/etc/aliases
+  - smtpd.conf:/etc/smtpd.conf
+  - mailname:/etc/mailname
+  - users:/etc/users.db
+  - ../maildirs:/home
+  ports:
+  - "25:25"
+  - "587:587"
+  links:
+  - spamd
+
+dovecot:
+  build: ../../docker/dovecot
+  volumes:
+  - cert.pem:/etc/pki/tls/certs/mail.crt
+  - privkey.pem:/etc/ssl/private/mail.key
+  - users.db:/etc/users.db
+  - ../maildirs:/var/mail
+  ports:
+  - "993:993"
+  - "143:143"
+  expose:
+  - "993"
+  - "143"
+
+spamd:
+  build: ../../docker/spamd
+
+roundcube:
+  build: ../../docker/roundcube
+  environment:
+  - VIRTUAL_HOST={virtualhost}
+  volumes:
+  - virtualhost.conf:/etc/apache2/sites-available/roundcube.conf
+  - ../roundcube:/var/www/roundcube/data
+  expose:
+  - "80"
+  links:
+  - dovecot
+  - smtpd

@@ -4,7 +4,8 @@ Mails. Lots of mails.
 
 ## Setup
 
-Make sure you have `Docker`, edit `config.ini`, then:
+Make sure you have `Docker` and `docker-compose`, edit `config.ini`,
+then:
 
     make
 
