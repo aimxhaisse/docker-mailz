@@ -6,7 +6,6 @@ protocols = imap lmtp
 log_path = /dev/stderr
 listen = *
 postmaster_address = postmaster@{hostname}
-mail_plugins = $mail_plugins autocreate
 
 # Allow RoundCube to connect without encryption
 
@@ -43,15 +42,27 @@ service lmtp {{
        }}
 }}
 
-# Autocreate some folders
+# Autocreate
 
-plugin {{
-       autocreate = Trash
-       autocreate2 = Junk
-       autocreate3 = Drafts
-       autocreate4 = Sent
-       autosubscribe = Trash
-       autosubscribe2 = Junk
-       autosubscribe3 = Drafts
-       autosubscribe4 = Sent
+namespace inbox {{
+
+      mailbox Trash {{
+          auto = subscribe
+          special_use = \Trash
+      }}
+
+      mailbox Drafts {{
+          auto = subscribe
+          special_use = \Drafts
+      }}
+
+      mailbox Sent {{
+          auto = subscribe
+          special_use = \Sent
+      }}
+
+      mailbox Junk {{
+          auto = create
+          special_use = \Junk
+      }}
 }}
