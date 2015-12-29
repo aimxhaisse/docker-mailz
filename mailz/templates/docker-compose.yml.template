@@ -1,13 +1,13 @@
 smtpd:
   build: ../../dockerfiles/opensmtpd
   volumes:
-  - cert.pem:/etc/ssl/mail.crt
-  - privkey.pem:/etc/ssl/private/mail.key
-  - aliases:/etc/aliases
-  - smtpd.conf:/etc/smtpd.conf
-  - mailname:/etc/mailname
-  - users:/etc/users.db
-  - ../maildirs:/home
+  - {conf_dir}cert.pem:/etc/ssl/mail.crt
+  - {conf_dir}privkey.pem:/etc/ssl/private/mail.key
+  - {conf_dir}aliases:/etc/aliases
+  - {conf_dir}smtpd.conf:/etc/smtpd.conf
+  - {conf_dir}mailname:/etc/mailname
+  - {conf_dir}users:/etc/users.db
+  - {data_dir}maildirs:/home
   ports:
   - "25:25"
   - "587:587"
@@ -18,10 +18,10 @@ smtpd:
 dovecot:
   build: ../../dockerfiles/dovecot
   volumes:
-  - cert.pem:/etc/pki/tls/certs/mail.crt
-  - privkey.pem:/etc/ssl/private/mail.key
-  - users:/etc/users.db
-  - ../maildirs:/var/mail
+  - {conf_dir}cert.pem:/etc/pki/tls/certs/mail.crt
+  - {conf_dir}privkey.pem:/etc/ssl/private/mail.key
+  - {conf_dir}users:/etc/users.db
+  - {data_dir}maildirs:/var/mail
   ports:
   - "993:993"
   - "143:143"
@@ -37,8 +37,8 @@ roundcube:
   environment:
   - VIRTUAL_HOST={virtualhost}
   volumes:
-  - virtualhost.conf:/etc/apache2/sites-available/roundcube.conf
-  - ../roundcube:/var/www/roundcube/data
+  - {conf_dir}virtualhost.conf:/etc/apache2/sites-available/roundcube.conf
+  - {data_dir}roundcube:/var/www/roundcube/data
   expose:
   - "80"
   links:

@@ -40,6 +40,8 @@ class MailzSync(object):
         self.settings = {}
         self.settings['hostname'] = hostname
         self.settings['virtualhost'] = virtualhost
+        self.settings['conf_dir'] = os.getenv('CONF_DIR')
+        self.settings['data_dir'] = os.getenv('DATA_DIR')
 
     def sync_aliases(self):
         """ I recreate the aliases file.

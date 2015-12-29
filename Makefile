@@ -36,6 +36,8 @@ reload:
 		-v $(shell pwd)/mailz/templates:/templates				 			\
 		$(EXTRA_VOLUMES)										\
 		-e DEFAULT_HOSTNAME=$(shell hostname -f)							\
+		-e DATA_DIR=$(shell pwd)/mailz/data/								\
+		-e CONF_DIR=$(shell pwd)/mailz/data/confs/							\
 		--rm --name mailz_sync_run mailz_sync
 
 start:
