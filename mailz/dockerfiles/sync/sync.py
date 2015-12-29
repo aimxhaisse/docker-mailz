@@ -9,6 +9,8 @@ import os
 import shlex
 import shutil
 import subprocess
+import socket
+import struct
 import time
 
 
@@ -18,6 +20,7 @@ SMTPD_TEMPLATE = '/templates/smtpd.conf.template'
 VHOST_TEMPLATE = '/templates/virtualhost.template'
 DOCKER_COMPOSE_TEMPLATE = '/templates/docker-compose.yml.template'
 ROUNDCUBE_TEMPLATE = '/templates/roundcube.config.inc.php.template'
+DOVECOT_TEMPLATE = '/templates/dovecot.conf.template'
 
 
 class MailzSync(object):
@@ -76,6 +79,18 @@ class MailzSync(object):
                 password = password.decode().strip()
                 output.write('{0}:{1}:::::\n'.format(login, str(password)))
 
+    def sync_credentials(self):
+        """ I recreate the users file.
+        """
+        target = '{0}/credentials'.format(TARGET_PATH)
+        with open(target, 'w') as output:
+            for userlist, clear_password in self.config.items('users'):
+                login = userlist.split(',')[0]
+                cmd = 'smtpctl encrypt {0}'.format(shlex.quote(clear_password))
+                password = subprocess.check_output(cmd, shell=True)
+                password = password.decode().strip()
+                output.write('{0} {1}\n'.format(login, str(password)))
+
     def sync_smtpd(self):
         """ I synchronize opensmtpd's configuration file.
         """
@@ -103,6 +118,16 @@ class MailzSync(object):
             with open('{0}/roundcube.config.inc.php'.format(
                     TARGET_PATH), 'w') as output:
                 output.write('<?php // Generated on {0} ?>\n'.format(self.now))
+                output.write(template.format(**self.settings))
+
+    def sync_dovecot(self):
+        """ I synchronize dovecot config file.
+        """
+        with open(DOVECOT_TEMPLATE, 'r') as input:
+            template = input.read()
+            with open('{0}/dovecot.conf'.format(
+                    TARGET_PATH), 'w') as output:
+                output.write('# Generated on {0}'.format(self.now))
                 output.write(template.format(**self.settings))
 
     def sync_vhost(self):
@@ -177,9 +202,11 @@ if __name__ == '__main__':
     m.sync_aliases()
     m.sync_mailname()
     m.sync_users()
+    m.sync_credentials()
     m.sync_docker_compose()
     m.sync_smtpd()
     m.sync_vhost()
     force_cert_reload = m.sync_privkey()
     m.sync_cert(force=force_cert_reload)
     m.sync_roundcube()
+    m.sync_dovecot()

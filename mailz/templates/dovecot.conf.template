@@ -2,9 +2,10 @@
 
 mail_location = maildir:/var/vmail/%n
 login_greeting = there is no spoon
-protocols = imap
+protocols = imap lmtp
 log_path = /dev/stderr
 listen = *
+postmaster_address = postmaster@{hostname}
 
 # Allow RoundCube to connect without encryption
 
@@ -21,13 +22,22 @@ ssl = yes
 ssl_key = </etc/ssl/private/mail.key
 ssl_cert = </etc/pki/tls/certs/mail.crt
 
-userdb {
+userdb {{
        driver = passwd-file
        args = username_format=%n /etc/users.db
        default_fields = uid=vmail gid=vmail
-}
+}}
 
-passdb {
+passdb {{
        driver = passwd-file
        args = username_format=%n /etc/users.db
-}
+}}
+
+# LMTP
+
+service lmtp {{
+       inet_listener lmtp {{
+              address = 0.0.0.0
+              port = 24
+       }}
+}}

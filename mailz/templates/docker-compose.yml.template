@@ -3,16 +3,15 @@ smtpd:
   volumes:
   - {conf_dir}cert.pem:/etc/ssl/mail.crt
   - {conf_dir}privkey.pem:/etc/ssl/private/mail.key
-  - {conf_dir}aliases:/etc/aliases
   - {conf_dir}smtpd.conf:/etc/smtpd.conf
   - {conf_dir}mailname:/etc/mailname
-  - {conf_dir}users:/etc/users.db
-  - {data_dir}maildirs:/home
+  - {conf_dir}credentials:/etc/smtpd-credentials
+  - {conf_dir}aliases:/etc/smtpd-aliases
+  - {data_dir}maildir:/var/mail
   ports:
   - "25:25"
   - "587:587"
   links:
-  - spamd
   - dovecot
 
 dovecot:
@@ -21,16 +20,13 @@ dovecot:
   - {conf_dir}cert.pem:/etc/pki/tls/certs/mail.crt
   - {conf_dir}privkey.pem:/etc/ssl/private/mail.key
   - {conf_dir}users:/etc/users.db
-  - {data_dir}maildirs:/var/mail
+  - {conf_dir}dovecot.conf:/etc/dovecot/dovecot.conf
+  - {data_dir}maildir:/var/vmail
   ports:
   - "993:993"
   - "143:143"
   expose:
-  - "993"
-  - "143"
-
-spamd:
-  build: ../../dockerfiles/spamd
+  - "24"
 
 roundcube:
   build: ../../dockerfiles/roundcube
@@ -43,5 +39,5 @@ roundcube:
   expose:
   - "80"
   links:
-  - dovecot
   - smtpd
+  - dovecot
