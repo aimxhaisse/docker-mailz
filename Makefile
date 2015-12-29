@@ -47,6 +47,9 @@ start:
 stop:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz stop
 
+logs:
+	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz logs
+
 backup:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz stop
 	mkdir -p $(BACKUP)
