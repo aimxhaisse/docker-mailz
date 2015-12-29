@@ -10,9 +10,11 @@
 # 'sync' script can decide wether or not we need to regenerate
 # certicates.
 
-SYNC_PRIVKEY=$(shell awk -F '=' '// { if ($$1 == "privkey") { print $$2; } }' < config.ini)
-SYNC_CERT=$(shell awk -F '=' '// { if ($$1 == "cert") { print $$2; } }' < config.ini)
-BACKUP=$(shell awk -F '=' '// { if ($$1 == "backup") { print $$2; } }' < config.ini)
+CONFIG ?= config.ini
+
+SYNC_PRIVKEY = $(shell awk -F '=' '// { if ($$1 == "privkey") { print $$2; } }' < $(CONFIG))
+SYNC_CERT = $(shell awk -F '=' '// { if ($$1 == "cert") { print $$2; } }' < $(CONFIG))
+BACKUP = $(shell awk -F '=' '// { if ($$1 == "backup") { print $$2; } }' < $(CONFIG))
 
 ifneq ($(SYNC_PRIVKEY),)
 	EXTRA_VOLUMES += -v $(shell readlink -f $(SYNC_PRIVKEY)):/privkey.pem
@@ -32,7 +34,7 @@ reload:
 	docker build -t mailz_sync mailz/dockerfiles/sync
 	docker run \
 		-v $(shell pwd)/mailz/data/confs:/confs 							\
-		-v $(shell pwd)/config.ini:/config.ini 								\
+		-v $(shell pwd)/$(CONFIG):/config.ini 								\
 		-v $(shell pwd)/mailz/templates:/templates				 			\
 		$(EXTRA_VOLUMES)										\
 		-e DEFAULT_HOSTNAME=$(shell hostname -f)							\
