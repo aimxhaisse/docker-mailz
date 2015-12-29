@@ -17,6 +17,7 @@ TARGET_PATH = '/confs'
 SMTPD_TEMPLATE = '/templates/smtpd.conf.template'
 VHOST_TEMPLATE = '/templates/virtualhost.template'
 DOCKER_COMPOSE_TEMPLATE = '/templates/docker-compose.yml.template'
+ROUNDCUBE_TEMPLATE = '/templates/roundcube.config.inc.php.template'
 
 
 class MailzSync(object):
@@ -92,6 +93,16 @@ class MailzSync(object):
             with open('{0}/docker-compose.yml'.format(
                     TARGET_PATH), 'w') as output:
                 output.write('# Generated on {0}\n\n'.format(self.now))
+                output.write(template.format(**self.settings))
+
+    def sync_roundcube(self):
+        """ I synchronize roundcube config file.
+        """
+        with open(ROUNDCUBE_TEMPLATE, 'r') as input:
+            template = input.read()
+            with open('{0}/roundcube.config.inc.php'.format(
+                    TARGET_PATH), 'w') as output:
+                output.write('<?php // Generated on {0} ?>\n'.format(self.now))
                 output.write(template.format(**self.settings))
 
     def sync_vhost(self):
@@ -171,3 +182,4 @@ if __name__ == '__main__':
     m.sync_vhost()
     force_cert_reload = m.sync_privkey()
     m.sync_cert(force=force_cert_reload)
+    m.sync_roundcube()

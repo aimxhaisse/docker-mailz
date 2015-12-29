@@ -39,6 +39,7 @@ roundcube:
   volumes:
   - {conf_dir}virtualhost.conf:/etc/apache2/sites-available/roundcube.conf
   - {data_dir}roundcube:/var/www/roundcube/data
+  - {conf_dir}roundcube.config.inc.php:/var/www/roundcube/config/config.inc.php
   expose:
   - "80"
   links:

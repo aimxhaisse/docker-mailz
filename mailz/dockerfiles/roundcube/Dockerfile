@@ -35,8 +35,6 @@ RUN wget $ROUNDCUBE_TARBALL -O /roundcube.tar.gz				\
  && chown -R www-data:www-data /var/www/roundcube				\
  && rm /roundcube.tar.gz
 
-ADD config.inc.php /var/www/roundcube/config/config.inc.php
-
 ENTRYPOINT a2ensite roundcube							\
  && a2dissite 000-default 							\
  && . /etc/apache2/envvars 							\
