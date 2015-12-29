@@ -36,9 +36,9 @@ RUN wget $ROUNDCUBE_TARBALL -O /roundcube.tar.gz				\
  && rm /roundcube.tar.gz
 
 ENTRYPOINT a2ensite roundcube							\
- && a2dissite 000-default 							\
- && . /etc/apache2/envvars 							\
- && mkdir -p /var/www/roundcube/data/						\
- && touch /var/www/roundcube/data/roundcube.db					\
- && chown -R www-data:www-data /var/www/roundcube/data/				\
- && apache2ctl -D FOREGROUND
+ ; a2dissite 000-default 							\
+ ; . /etc/apache2/envvars 							\
+ ; mkdir -p /var/www/roundcube/data/						\
+ ; touch /var/www/roundcube/data/roundcube.db					\
+ ; chown -R www-data:www-data /var/www/roundcube/data/				\
+ ; apache2ctl -D FOREGROUND
