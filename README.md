@@ -1,5 +1,7 @@
 # Docker Mailz
 
+* *warning*: WIP, not yet ready for production.
+
 Mailz. Lots of mailz.
 
 ## Setup
