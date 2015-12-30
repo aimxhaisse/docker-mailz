@@ -28,7 +28,7 @@ endif
 
 # Enough for the trickeries.
 
-all:	reload start
+all:	reload restart
 
 reload:
 	docker build -t mailz_sync mailz/dockerfiles/sync
@@ -42,12 +42,10 @@ reload:
 		-e CONF_DIR=$(shell pwd)/mailz/data/confs/							\
 		--rm --name mailz_sync_run mailz_sync
 
-start:
+restart:
+	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz stop
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz build
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d
-
-stop:
-	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz stop
 
 logs:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz logs
@@ -59,4 +57,4 @@ backup:
 	docker run --rm -v $(shell pwd)/mailz/data:/data alpine tar -zcvf - /data > $(BACKUP)/docker-mailz-backup-$(shell date +%s).tar.gz
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d
 
-.PHONY: backup start reload all stop
+.PHONY: all reload restart logs backup
