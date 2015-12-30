@@ -12,6 +12,13 @@ smtpd:
   - "25:25"
   - "587:587"
   links:
+  - spampd
+
+spampd:
+  build: ../../dockerfiles/spampd
+  expose:
+  - "24"
+  links:
   - dovecot
 
 dovecot:

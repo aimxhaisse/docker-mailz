@@ -7,6 +7,6 @@ table credentials file:/etc/smtpd-credentials
 listen on 0.0.0.0 port 25 hostname {hostname} tls pki {hostname}
 listen on 0.0.0.0 port 587 hostname {hostname} tls-require pki {hostname} auth <credentials>
 
-accept from any for domain "{hostname}" relay via lmtp://dovecot:24
+accept from any for domain "{hostname}" relay via lmtp://spampd:24
 accept from local for local alias <aliases> deliver to maildir
 accept from local for any relay

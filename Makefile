@@ -10,7 +10,7 @@
 # 'sync' script can decide wether or not we need to regenerate
 # certicates.
 
-CONFIG ?= config.ini
+CONFIG ?= config-prod.ini
 
 SYNC_PRIVKEY = $(shell awk -F '=' '// { if ($$1 == "privkey") { print $$2; } }' < $(CONFIG))
 SYNC_CERT = $(shell awk -F '=' '// { if ($$1 == "cert") { print $$2; } }' < $(CONFIG))
@@ -47,6 +47,9 @@ restart:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz build
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d
 
+stop:
+	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz stop
+
 logs:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz logs
 
@@ -57,4 +60,4 @@ backup:
 	docker run --rm -v $(shell pwd)/mailz/data:/data alpine tar -zcvf - /data > $(BACKUP)/docker-mailz-backup-$(shell date +%s).tar.gz
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d
 
-.PHONY: all reload restart logs backup
+.PHONY: all reload restart logs backup stop
