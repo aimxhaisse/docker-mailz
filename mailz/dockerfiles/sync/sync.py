@@ -88,8 +88,8 @@ class MailzSync(object):
     def sync_templates(self):
         """ I synchronize all templates.
         """
-        for path in glob.glob('/templates/*.tpl'):
-            target = '{0}/{1}'.format(TARGET_PATH, os.path.basename(path)[:-4])
+        for path in glob.glob('/templates/*.template'):
+            target = '{0}/{1}'.format(TARGET_PATH, os.path.basename(path)[:-9])
             with open(path, 'r') as input:
                 template = input.read()
                 with open(target, 'w') as output:

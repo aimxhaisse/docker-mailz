@@ -46,6 +46,8 @@ service lmtp {{
 
 namespace inbox {{
 
+      inbox = yes
+
       mailbox Trash {{
           auto = subscribe
           special_use = \Trash
