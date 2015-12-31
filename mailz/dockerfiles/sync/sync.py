@@ -66,26 +66,20 @@ class MailzSync(object):
         target = '{0}/users'.format(TARGET_PATH)
         with open(target, 'w') as output:
             output.write('# Generated on {0}\n\n'.format(self.now))
-            for userlist, clear_password in self.config.items('users'):
+            for userlist, password in self.config.items('users'):
                 login = userlist.split(',')[0]
-                cmd = 'smtpctl encrypt {0}'.format(shlex.quote(clear_password))
-                password = subprocess.check_output(cmd, shell=True)
-                password = password.decode().strip()
-                output.write('{0}:{1}:::::\n'.format(login, str(password)))
+                output.write('{0}:{1}:::::\n'.format(login, password))
 
     def sync_credentials(self):
         """ I recreate the users file.
         """
         target = '{0}/credentials'.format(TARGET_PATH)
         with open(target, 'w') as output:
-            for userlist, clear_password in self.config.items('users'):
+            for userlist, password in self.config.items('users'):
                 login = userlist.split(',')[0]
-                cmd = 'smtpctl encrypt {0}'.format(shlex.quote(clear_password))
-                password = subprocess.check_output(cmd, shell=True)
-                password = password.decode().strip()
                 output.write('{0}@{1} {2}\n'.format(login,
                                                     self.settings['hostname'],
-                                                    str(password)))
+                                                    password))
 
     def sync_templates(self):
         """ I synchronize all templates.

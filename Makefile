@@ -45,12 +45,13 @@ help:
 	@echo "logs		print containers logs"
 	@echo "backup		backup mail data"
 	@echo "stop		stop all containers"
-	@echo "crypt		encrypt a password"
+	@echo "encrypt		encrypt a password"
 	@echo "help		print this help"
 	@echo ""
 
 spawn: sync
 	# we need to explicitely stop here because we want the regenerate configuration to be taken into account
+	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz build
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz stop
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d
 
@@ -66,6 +67,12 @@ sync:
 		-e CONF_DIR=$(shell pwd)/mailz/data/confs/	\
 		--rm --name mailz_sync_run mailz_sync
 
+encrypt:
+	docker build -t mailz_crypt mailz/dockerfiles/crypt
+	docker run \
+	        -i -t --rm --name mailz_crupt_run mailz_crypt
+
+
 stop:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz stop
 
@@ -79,4 +86,4 @@ backup:
 	docker run --rm -v $(shell pwd)/mailz/data:/data alpine tar -zcvf - /data > $(BACKUP)/docker-mailz-backup-$(shell date +%s).tar.gz
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d
 
-.PHONY: all sync spawn logs backup stop
+.PHONY: all sync spawn logs backup stop encrypt

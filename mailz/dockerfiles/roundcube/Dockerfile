@@ -41,4 +41,4 @@ ENTRYPOINT a2ensite roundcube							\
  ; mkdir -p /var/www/roundcube/data/						\
  ; touch /var/www/roundcube/data/roundcube.db					\
  ; chown -R www-data:www-data /var/www/roundcube/data/				\
- ; apache2ctl -D FOREGROUND
+ ; apache2ctl -e info -DFOREGROUND
