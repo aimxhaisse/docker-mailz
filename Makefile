@@ -36,7 +36,18 @@ endif
 
 # Enough for the trickeries.
 
-all:	spawn
+help:
+	@echo "Mailz, lots of mailz."
+	@echo ""
+	@echo "All configuration is done via config.ini, enjoy."
+	@echo ""
+	@echo "spawn		sync configuration and respawn all containers"
+	@echo "logs		print containers logs"
+	@echo "backup		backup mail data"
+	@echo "stop		stop all containers"
+	@echo "crypt		encrypt a password"
+	@echo "help		print this help"
+	@echo ""
 
 spawn: sync
 	# we need to explicitely stop here because we want the regenerate configuration to be taken into account
