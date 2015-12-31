@@ -83,7 +83,9 @@ class MailzSync(object):
                 cmd = 'smtpctl encrypt {0}'.format(shlex.quote(clear_password))
                 password = subprocess.check_output(cmd, shell=True)
                 password = password.decode().strip()
-                output.write('{0} {1}\n'.format(login, str(password)))
+                output.write('{0}@{1} {2}\n'.format(login,
+                                                    self.settings['hostname'],
+                                                    str(password)))
 
     def sync_templates(self):
         """ I synchronize all templates.
