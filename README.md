@@ -1,66 +1,40 @@
 # Docker Mailz
 
-* *warning*: WIP, not yet ready for production.
-
 Mailz. Lots of mailz.
 
-## Setup
+All-in-one solution to manage mails on a Linux box.
 
-Make sure you have [docker](https://www.docker.com/) and
-[docker-compose](https://docs.docker.com/compose/), edit `config.ini`,
-then:
+## Components
 
-    make
+* OpenSMTPD
+* SpamPD (SpamAssassin)
+* Dovecot
+* RoundCube
 
-You now have:
+## Usage
 
-- a SMTP server configured for your hostname forwarding mails to…
-- a SPAM filter which forwards regular mails to…
-- an IMAP server which is regularily polled by…
-- a RoundCube web interface waiting for you.
+    $ make
+    Mailz, lots of mailz.
+    
+    All configuration is done via config.ini, enjoy.
+    
+    spawn           sync configuration and respawn all containers
+    logs            print containers logs
+    backup          backup mail data
+    stop            stop all containers
+    encrypt         encrypt a password
+    help            print this help
 
 ## Features
 
-- multiple users
-- aliases
-- SSL
-- antispam
-- facilities to backup
+* Multiple users
+* SSL
+* Webmail
+* Antispam
+* Backups
 
-## Common Tasks
+## How To
 
-All configuration is done via the `config.ini` file, if you want to
-add a user, edit a password, change your domain name… Edit the file
-and run `make`.
-
-You can also edit template configuration files that are in
-`mailz/templates` and re-run `make`.
-
-If you need something else that can't be done in this way, consider
-opening a ticket :-)
-
-## Backups
-
-    cp -r mailz/data backup-$(date +%s)
-
-Or if you are lazy:
-
-    make backup
-
-This will stop all containers nicely, perform the backup, and restart
-them. Backups are by default stored in `mailz/backups` (can be
-configured in `config.ini`).
-
-## SSL
-
-By default, if you don't provide a `privkey` in the configuration
-file, a key is generated for you.
-
-Similarily, if you don't provide a `cert` in the configuration file,
-a self-signed certificate is derived from `privkey`.
-
-## VirtualHosts
-
-Docker Mailz can be coupled with
-[nginx-proxy](https://github.com/jwilder/nginx-proxy), if you already
-have it, your RoundCube virtualhost should already be available.
+Everything is managed by `config.ini`, if you need to change
+certificates, add a user, update a password, remove a user… edit
+`config.ini` then `make spawn`.
