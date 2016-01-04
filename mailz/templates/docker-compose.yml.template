@@ -7,7 +7,6 @@ smtpd:
   - {conf_dir}mailname:/etc/mailname
   - {conf_dir}credentials:/etc/smtpd-credentials
   - {conf_dir}aliases:/etc/smtpd-aliases
-  - {data_dir}maildir:/var/mail
   - {data_dir}spool:/var/spool/smtpd
   ports:
   - "25:25"
