@@ -1,14 +1,14 @@
 # Docker Mailz
 
-Mailz. Lots of mailz.
-
-All-in-one solution to manage mails on a Linux box.
+All-in-one solution to manage mails on a Linux box with a single,
+simple, human-readable configuration file.
 
 ## Components
 
 * OpenSMTPD
 * SpamPD (SpamAssassin)
 * Dovecot
+* Sieve
 * RoundCube
 
 ## Usage
@@ -35,6 +35,13 @@ All-in-one solution to manage mails on a Linux box.
 
 ## How To
 
-Everything is managed by `config.ini`, if you need to change
-certificates, add a user, update a password, remove a user… edit
-`config.ini` then `make spawn`.
+Everything is managed by `config.ini`, if you need:
+
+* to change certificates
+* add a user
+* update a password
+* remove a user
+* change your hostname
+* …
+
+Edit `config.ini` and `make spawn`.
