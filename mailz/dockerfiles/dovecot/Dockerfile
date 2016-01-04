@@ -1,10 +1,12 @@
-FROM ubuntu:vivid
+FROM debian:jessie
 MAINTAINER Sébastien Rannou <mxs@sbrk.org> (@aimxhaisse)
 
 RUN apt-get update -q -y					\
  && apt-get install -q -y					\
     dovecot-imapd						\
     dovecot-lmtpd						\
+    dovecot-sieve						\
+    dovecot-managesieved					\
  && apt-get clean
 
 RUN groupadd -g 1000 vmail					\

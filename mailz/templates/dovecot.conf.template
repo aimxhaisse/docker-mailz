@@ -68,3 +68,9 @@ namespace inbox {{
           special_use = \Junk
       }}
 }}
+
+# Sieve
+
+protocol lmtp {{
+      mail_plugins = $mail_plugins sieve
+}}
