@@ -74,3 +74,8 @@ namespace inbox {{
 protocol lmtp {{
       mail_plugins = $mail_plugins sieve
 }}
+
+plugin {{
+      sieve_default = /var/lib/dovecot/sieve/default.sieve
+      sieve_global = /var/lib/dovecot/sieve/global/
+}}

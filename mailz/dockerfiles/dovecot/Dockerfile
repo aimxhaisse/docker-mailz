@@ -14,6 +14,8 @@ RUN groupadd -g 1000 vmail					\
  && mkdir /var/vmail						\
  && chown vmail:vmail /var/vmail
 
+ADD default.sieve /var/lib/dovecot/sieve/default.sieve
+
 ENTRYPOINT chown root /etc/pki/tls/certs/mail.crt		\
  ; chown root /etc/ssl/private/mail.key				\
  ; chmod 444 /etc/pki/tls/certs/mail.crt			\
