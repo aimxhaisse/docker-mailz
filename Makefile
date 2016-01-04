@@ -86,7 +86,7 @@ backup:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz rm -f
 	mkdir -p $(BACKUP)
 	# hack to be root without using sudo, we need this because permissions of some files have special rights.
-	docker run --rm -v $(shell pwd)/mailz/data:/data alpine tar -zcvf - /data > $(BACKUP)/docker-mailz-backup-$(shell date +%s).tar.gz
+	docker run --rm -v $(shell pwd)/mailz/data:/data alpine tar -zcf - /data > $(BACKUP)/docker-mailz-backup-$(shell date +%s).tar.gz
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d
 
 .PHONY: all sync spawn logs backup stop encrypt
