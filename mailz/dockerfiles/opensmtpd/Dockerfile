@@ -11,5 +11,6 @@ ENTRYPOINT chown root /etc/ssl/mail.crt		\
  && chmod 444 /etc/ssl/mail.crt      		\
  && chown root /etc/ssl/private/mail.key	\
  && chmod 400 /etc/ssl/private/mail.key       	\
- && chown -R smtpd /var/spool/smtpd		\
+ && chown -R root /var/spool/smtpd		\
+ && chmod -R 711 /var/spool/smtpd		\
  && smtpd -v -d
