@@ -8,9 +8,12 @@ RUN apt-get update -q -y			\
  && apt-get clean
 
 ENTRYPOINT chown root /etc/ssl/mail.crt		\
- && chmod 444 /etc/ssl/mail.crt      		\
- && chown root /etc/ssl/private/mail.key	\
- && chmod 400 /etc/ssl/private/mail.key       	\
- && chown -R root /var/spool/smtpd		\
- && chmod 711 /var/spool/smtpd			\
- && smtpd -v -d
+ ; chmod 444 /etc/ssl/mail.crt      		\
+ ; chown root /etc/ssl/private/mail.key		\
+ ; chmod 400 /etc/ssl/private/mail.key       	\
+ ; chown root /var/spool/smtpd			\
+ ; chmod 711 /var/spool/smtpd			\
+ ; chown opensmtpq /var/spool/smtpd/*		\
+ ; chown root /var/spool/smtpd/offline		\
+; newaliases					\
+ ; smtpd -v -d

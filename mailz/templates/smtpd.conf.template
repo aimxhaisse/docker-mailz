@@ -1,12 +1,15 @@
 pki {hostname} key "/etc/ssl/private/mail.key"
 pki {hostname} certificate "/etc/ssl/mail.crt"
 
-table aliases file:/etc/smtpd-aliases
+table users file:/etc/smtpd-userbase
 table credentials file:/etc/smtpd-credentials
+table aliases file:/etc/smtpd-aliases
 
 listen on 0.0.0.0 port 25 hostname {hostname} tls pki {hostname}
 listen on 0.0.0.0 port 587 hostname {hostname} tls-require pki {hostname} auth <credentials>
 
-accept from any for domain "{hostname}" relay via lmtp://spampd:24
-accept from local for local alias <aliases> deliver to maildir
+# accept from any for domain "{hostname}" alias <aliases> recipient <recipents> deliver to lmtp spampd:24
+# OK:accept from any for domain "{hostname}" relay via lmtp://spampd:24
+
+accept from any for domain "{hostname}" userbase <users> alias <aliases> deliver to lmtp spampd:24
 accept from local for any relay

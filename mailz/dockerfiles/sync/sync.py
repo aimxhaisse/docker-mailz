@@ -51,7 +51,16 @@ class MailzSync(object):
                 aliases = userlist.split(',')
                 if len(aliases) > 1:
                     for alias in aliases[1:]:
-                        output.write('{0}: {1}\n'.format(aliases[0], alias))
+                        output.write('{0}: {1}\n'.format(alias, aliases[0]))
+
+    def sync_userbase(self):
+        """ I recreate the userbase file.
+        """
+        target = '{0}/userbase'.format(TARGET_PATH)
+        with open(target, 'w') as output:
+            for userlist, _ in self.config.items('users'):
+                aliases = userlist.split(',')
+                output.write('{0} 1000:100:/\n'.format(aliases[0]))
 
     def sync_mailname(self):
         """ I create the mailname file.
@@ -153,6 +162,7 @@ if __name__ == '__main__':
     m = MailzSync()
     m.sync_templates()
     m.sync_aliases()
+    m.sync_userbase()
     m.sync_mailname()
     m.sync_users()
     m.sync_credentials()
