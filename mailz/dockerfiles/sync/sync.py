@@ -136,8 +136,10 @@ class MailzSync(object):
                 return self.do_copy(source, target)
             return self.do_gen_cert(privkey, target)
         if os.path.exists(source):
-            source_sum = hashlib.md5(source).hexdigest()
-            target_sum = hashlib.md5(target).hexdigest()
+            with open(source, 'rb') as afile:
+                source_sum = hashlib.md5(afile.read()).hexdigest()
+            with open(target, 'rb') as afile:
+                target_sum = hashlib.md5(afile.read()).hexdigest()
             if source_sum != target_sum:
                 return self.do_copy(source, target)
 
@@ -152,8 +154,10 @@ class MailzSync(object):
                 return self.do_copy(source, target)
             return self.do_gen_privkey(target)
         if os.path.exists(source):
-            source_sum = hashlib.md5(source).hexdigest()
-            target_sum = hashlib.md5(target).hexdigest()
+            with open(source, 'rb') as afile:
+                source_sum = hashlib.md5(afile.read()).hexdigest()
+            with open(target, 'rb') as afile:
+                target_sum = hashlib.md5(afile.read()).hexdigest()
             if source_sum != target_sum:
                 return self.do_copy(source, target)
 
