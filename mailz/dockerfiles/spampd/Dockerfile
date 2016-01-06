@@ -16,5 +16,4 @@ ENTRYPOINT rsyslogd ;				\
 		  --group spampd		\
 		  --nodetach  			\
 		  --tagall			\
-		  --debug			\
 		  --config /etc/spampd.conf
