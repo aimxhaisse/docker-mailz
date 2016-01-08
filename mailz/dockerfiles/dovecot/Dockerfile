@@ -21,4 +21,5 @@ ENTRYPOINT chown root /etc/pki/tls/certs/mail.crt		\
  ; chmod 444 /etc/pki/tls/certs/mail.crt			\
  ; chmod 400 /etc/ssl/private/mail.key       			\
  ; chown -R vmail /var/vmail					\
+ ; rm -f /var/run/dovecot/master.pid				\
  ; dovecot -F

@@ -53,7 +53,6 @@ spawn: sync
 	# we need to explicitely stop here because we want the regenerate configuration to be taken into account
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz build
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz stop
-	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz rm -f
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d
 
 sync:
@@ -76,14 +75,12 @@ encrypt:
 
 stop:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz stop
-	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz rm -f
 
 logs:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz logs
 
 backup:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz stop
-	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz rm -f
 	mkdir -p $(BACKUP)
 	# hack to be root without using sudo, we need this because permissions of some files have special rights.
 	docker run --rm -v $(shell pwd)/mailz/data:/data alpine tar -zcf - /data > $(BACKUP)/docker-mailz-backup-$(shell date +%s).tar.gz

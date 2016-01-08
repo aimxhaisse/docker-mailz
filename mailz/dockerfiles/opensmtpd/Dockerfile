@@ -15,5 +15,6 @@ ENTRYPOINT chown root /etc/ssl/mail.crt		\
  ; chmod 711 /var/spool/smtpd			\
  ; chown opensmtpq /var/spool/smtpd/*		\
  ; chown root /var/spool/smtpd/offline		\
-; newaliases					\
+ ; rm -f /var/run/smtpd.pid			\
+ ; newaliases					\
  ; smtpd -d

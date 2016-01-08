@@ -9,7 +9,9 @@ RUN apt-get update -q -y			\
     rsyslog					\
  && apt-get clean
 
-ENTRYPOINT rsyslogd ;				\
+ENTRYPOINT rm -f /var/run/rsyslogd.pid ;	\
+	   rm -f /var/run/spampd.pid ;		\
+	   rsyslogd ;				\
 	   spampd --host 0.0.0.0:24		\
 		  --relayhost dovecot:24	\
 		  --user spampd			\
