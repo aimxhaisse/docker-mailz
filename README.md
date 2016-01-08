@@ -3,6 +3,8 @@
 All-in-one solution to manage mails on a Linux box with a single,
 simple, human-readable configuration file.
 
+![](https://github.com/aimxhaisse/docker-mailz/raw/master/mailz/docker-mailz.png)
+
 ## Components
 
 * OpenSMTPD
