@@ -46,6 +46,7 @@ help:
 	@echo "backup		backup mail data"
 	@echo "stop		stop all containers"
 	@echo "encrypt		encrypt a password"
+	@echo "status		show status of containers"
 	@echo "help		print this help"
 	@echo ""
 
@@ -79,6 +80,9 @@ stop:
 logs:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz logs
 
+status:
+	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz ps
+
 backup:
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz stop
 	mkdir -p $(BACKUP)
@@ -86,4 +90,4 @@ backup:
 	docker run --rm -v $(shell pwd)/mailz/data:/data alpine tar -zcf - /data > $(BACKUP)/docker-mailz-backup-$(shell date +%s).tar.gz
 	docker-compose -f mailz/data/confs/docker-compose.yml -p mailz up -d
 
-.PHONY: all sync spawn logs backup stop encrypt
+.PHONY: all sync spawn logs backup stop encrypt status

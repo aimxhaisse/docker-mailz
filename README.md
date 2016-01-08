@@ -11,21 +11,25 @@ simple, human-readable configuration file.
 * Sieve
 * RoundCube
 
-## Usage
+## Setup
 
     $ cp config.ini.example config.ini
     $ $EDITOR config.ini
+
+## Usage
+
     $ make
     Mailz, lots of mailz.
     
     All configuration is done via config.ini, enjoy.
     
-    spawn           sync configuration and respawn all containers
-    logs            print containers logs
-    backup          backup mail data
-    stop            stop all containers
-    encrypt         encrypt a password
-    help            print this help
+    spawn            sync configuration and respawn all containers
+    logs             print containers logs
+    backup           backup mail data
+    stop             stop all containers
+    encrypt          encrypt a password
+    status           show status of containers
+    help             print this help
 
 ## Features
 
