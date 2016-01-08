@@ -13,6 +13,8 @@ simple, human-readable configuration file.
 
 ## Usage
 
+    $ cp config.ini.example config.ini
+    $ $EDITOR config.ini
     $ make
     Mailz, lots of mailz.
     

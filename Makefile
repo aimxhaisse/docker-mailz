@@ -8,7 +8,7 @@
 # configurations to the mails/data/confs directory. Configurations
 # files are then mounted read-only in all containers.
 
-CONFIG ?= config-prod.ini
+CONFIG ?= config.ini
 
 # Here we attempt to resolve the privkey/cert path from config.ini so
 # we can mount them in the 'sync' container. This is required so the
