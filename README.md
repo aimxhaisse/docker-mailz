@@ -7,11 +7,11 @@ simple, human-readable configuration file.
 
 ## Components
 
-* OpenSMTPD
-* SpamPD (SpamAssassin)
-* Dovecot
-* Sieve
-* RoundCube
+* [OpenSMTPD](https://www.opensmtpd.org/)
+* [SpamPD](http://spamassassin.apache.org/) (SpamAssassin)
+* [Dovecot](http://www.dovecot.org/)
+* [Sieve](http://sieve.info/)
+* [RoundCube](https://roundcube.net/)
 
 ## Setup
 
@@ -53,3 +53,7 @@ Everything is managed by `config.ini`, if you need:
 * …
 
 Edit `config.ini` and `make spawn`.
+
+
+
+More on my [website](https://mxs.sbrk.org/docker-mailz.html).
