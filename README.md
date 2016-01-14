@@ -54,6 +54,8 @@ Everything is managed by `config.ini`, if you need:
 
 Edit `config.ini` and `make spawn`.
 
+## Integration
 
+The *RoundCube* virtualhost is compliant with [nginx-proxy](https://github.com/jwilder/nginx-proxy/) and works out of the box.
 
 More on my [website](https://mxs.sbrk.org/docker-mailz.html).
